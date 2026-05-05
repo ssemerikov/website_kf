@@ -11,7 +11,7 @@
     <!-- KaTeX -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}, {left: '\\(', right: '\\)', display: false}, {left: '\\[', right: '\\]', display: true}]});"></script>
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../styles/main.css">
@@ -47,55 +47,63 @@
         <article class="content">
             <section id="definition">
                 <h1>§ 8. Квадратична функція, її графік і властивості</h1>
-                <p class="lead">Теоретичний матеріал у формі діалогу, як у вашому підручнику.</p>
-                
+                <p class="lead">Вивчаємо одну з найважливіших функцій у шкільному курсі математики.</p>
+
                 <div class="info-box">
                     <strong>Означення:</strong> Квадратичною функцією називають функцію, яку можна задати формулою вигляду 
-                    <span class="math">y = ax^2 + bx + c</span>, де <span class="math">x</span> — незалежна змінна, 
-                    <span class="math">a, b, c</span> — деякі числа, причому <span class="math">a \neq 0</span>.
+                    $$y = ax^2 + bx + c$$ де $x$ — незалежна змінна, 
+                    $a, b, c$ — деякі числа, причому $a \neq 0$.
                 </div>
 
-                <p>Чому умова \( a \neq 0 \) є обов'язковою? Подумай: якщо \( a = 0 \), то ми отримаємо \( y = bx + c \), а це вже знайома нам лінійна функція.</p>
+                <p>У підручнику (Школьний О. В.) наголошується: умова $a \neq 0$ є критичною, адже саме доданок $ax^2$ робить функцію квадратичною.</p>
             </section>
+
 
             <section id="parabola">
                 <h2>Парабола: графік квадратичної функції</h2>
-                <p>Графіком квадратичної функції є крива, яку називають <strong>параболою</strong>.</p>
-                <div class="flex-container">
-                    <div class="text">
+                <p>Графіком квадратичної функції є крива, яку називають <strong>параболою</strong>. Розглянемо найпростішу параболу $y = x^2$.</p>
+                <div class="flex-container" style="display: flex; gap: 20px; align-items: flex-start;">
+                    <div class="text" style="flex: 1;">
                         <ul>
-                            <li>Якщо \( a > 0 \), гілки параболи спрямовані <strong>вгору</strong>.</li>
-                            <li>Якщо \( a < 0 \), гілки параболи спрямовані <strong>вниз</strong>.</li>
+                            <li>Якщо $a > 0$, гілки параболи спрямовані <strong>вгору</strong>.</li>
+                            <li>Якщо $a < 0$, гілки параболи спрямовані <strong>вниз</strong>.</li>
+                            <li>Вісь $Oy$ є віссю симетрії для $y = ax^2$.</li>
                         </ul>
                     </div>
-                    <div class="visual-placeholder">
-                        <!-- Тут буде вставлено інтерактивний графік або ілюстрація -->
-                        <div id="simple-plot"></div>
+                    <div style="flex: 1; height: 300px; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                        <iframe src="https://www.desmos.com/calculator/ptv36k6p0q?embed" width="100%" height="100%" style="border: 1px solid #ccc" frameborder=0></iframe>
                     </div>
                 </div>
             </section>
 
             <section id="properties">
-                <h2>Ключові властивості</h2>
+                <h2>Алгоритм побудови та властивості</h2>
+                <p>Для побудови графіка $y = ax^2 + bx + c$ використовують такий алгоритм:</p>
+                <ol style="margin-left: 20px; margin-bottom: 20px;">
+                    <li>Визначити напрям гілок (за знаком $a$).</li>
+                    <li>Знайти координати вершини $x_0 = -\frac{b}{2a}$, $y_0 = f(x_0)$.</li>
+                    <li>Знайти нулі функції (розв'язавши рівняння $ax^2 + bx + c = 0$).</li>
+                    <li>Знайти точку перетину з віссю $Oy$ (це точка $(0; c)$).</li>
+                </ol>
                 <table class="properties-table">
                     <thead>
                         <tr>
                             <th>Властивість</th>
-                            <th>Формула / Опис</th>
+                            <th>Опис для $a > 0$</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Координати вершини</td>
-                            <td>\( x_0 = -\frac{b}{2a}, \quad y_0 = f(x_0) \)</td>
+                            <td>Область визначення</td>
+                            <td>$D(f) = (-\infty; +\infty)$</td>
                         </tr>
                         <tr>
-                            <td>Вісь симетрії</td>
-                            <td>Пряма \( x = x_0 \)</td>
+                            <td>Область значень</td>
+                            <td>$E(f) = [y_0; +\infty)$</td>
                         </tr>
                         <tr>
-                            <td>Нулі функції</td>
-                            <td>Значення \( x \), при яких \( ax^2 + bx + c = 0 \)</td>
+                            <td>Зростання</td>
+                            <td>На проміжку $[x_0; +\infty)$</td>
                         </tr>
                     </tbody>
                 </table>
@@ -122,6 +130,32 @@
                             <li><strong>Архітектура:</strong> Форма арок мостів часто наближена до параболічної для кращого розподілу ваги.</li>
                             <li><strong>Техніка:</strong> Параболічні антени збирають сигнали з космосу в одну точку — фокус.</li>
                             <li><strong>Природа:</strong> Траєкторія м'яча, кинутого під кутом до горизонту — це парабола (якщо знехтувати опором повітря).</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            <section id="transform">
+                <h2>4. Перетворення графіків</h2>
+                <p>Як з базової параболи $y = x^2$ отримати будь-яку іншу?</p>
+                <div class="info-box">
+                    <ul>
+                        <li>$y = x^2 + k$ — зсув <strong>вгору/вниз</strong> по осі $Oy$.</li>
+                        <li>$y = (x - h)^2$ — зсув <strong>ліворуч/праворуч</strong> по осі $Ox$.</li>
+                        <li>$y = ax^2$ — <strong>розтяг або стиск</strong> відносно осі $Ox$.</li>
+                    </ul>
+                </div>
+                <p>У підручнику (Школьний О. В.) ці перетворення розглядаються як основний інструмент для швидкої побудови складних функцій.</p>
+            </section>
+
+            <section id="interest">
+                <h2>5. Цікаво знати</h2>
+                <div class="flex-container" style="display: flex; gap: 20px; align-items: center;">
+                    <div class="text" style="flex: 1;">
+                        <p>Парабола — це не просто лінія в зошиті. Вона всюди:</p>
+                        <ul>
+                            <li><strong>Архітектура:</strong> Форма арок мостів часто наближена до параболічної для кращого розподілу ваги.</li>
+                            <li><strong>Техніка:</strong> Параболічні антени збирають сигнали з космосу в одну точку — фокус.</li>
+                            <li><strong>Природа:</strong> Траєкторія м'яча, кинутого під кутом — це парабола.</li>
                         </ul>
                     </div>
                 </div>

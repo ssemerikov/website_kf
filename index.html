@@ -11,9 +11,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     
     <!-- KaTeX -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css" integrity="sha384-03RST0uVPlHG79zLI/+6P6nuZqMuzXgad8unU18V0ipm2x9BH89V/1R8TiR3mG9Y" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js" integrity="sha384-97G79zLI/+6P6nuZqMuzXgad8unU18V0ipm2x9BH89V/1R8TiR3mG9Y" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDkn/6EAK7iXv8sEtImL034iaPKeSBevn9Id1n600uptBAbo6yvg5" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}, {left: '\\(', right: '\\)', display: false}, {left: '\\[', right: '\\]', display: true}]});"></script>
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="styles/main.css">
@@ -52,26 +52,59 @@
 
         <section class="features container">
             <div class="feature-card">
-                <div class="icon">📖</div>
-                <h3>Доступна теорія</h3>
-                <p>Матеріал § 8 у зручному форматі з анімаціями та прикладами.</p>
+                <div class="icon">📐</div>
+                <h3>Квадратична функція</h3>
+                <p>Функція вигляду $y = ax^2 + bx + c$, де $a \neq 0$. Основний об'єкт нашого дослідження.</p>
             </div>
             <div class="feature-card">
-                <div class="icon">🏋️</div>
-                <h3>Розумні тренажери</h3>
-                <p>Від "Конструктора" до "Графічного диктанту" — навчися будувати параболи легко.</p>
+                <div class="icon">📊</div>
+                <h3>Графік — Парабола</h3>
+                <p>Крива, що відображає залежність змінних. Може бути спрямована вгору або вниз.</p>
             </div>
             <div class="feature-card">
-                <div class="icon">📝</div>
-                <h3>Самоперевірка</h3>
-                <p>Тести у форматі НМТ/ЗНО з миттєвим результатом та розбором помилок.</p>
+                <div class="icon">🎯</div>
+                <h3>Властивості</h3>
+                <p>Нулі функції, вершина, проміжки зростання та спадання.</p>
+            </div>
+        </section>
+        <section id="progress" class="container" style="padding: 80px 0;">
+            <h2 style="text-align: center; margin-bottom: 40px; font-family: 'Montserrat', sans-serif;">Твій прогрес</h2>
+            <div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                <div style="margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>📖 Теорія</span>
+                        <span>25%</span>
+                    </div>
+                    <div style="height: 10px; background: #eee; border-radius: 5px; overflow: hidden;">
+                        <div style="width: 25%; height: 100%; background: var(--secondary-color);"></div>
+                    </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>🏋️ Тренажери</span>
+                        <span>10%</span>
+                    </div>
+                    <div style="height: 10px; background: #eee; border-radius: 5px; overflow: hidden;">
+                        <div style="width: 10%; height: 100%; background: var(--accent-color);"></div>
+                    </div>
+                </div>
+                <div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>📝 Тести</span>
+                        <span>0%</span>
+                    </div>
+                    <div style="height: 10px; background: #eee; border-radius: 5px; overflow: hidden;">
+                        <div style="width: 0%; height: 100%; background: #4caf50;"></div>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 Інтерактивний освітній ресурс. Розроблено за допомогою ШІ.</p>
+            <p>Розроблено студентом [Прізвище Ім'я, Група] за допомогою ШІ.</p>
+            <p>&copy; 2026 Інтерактивний освітній ресурс.</p>
         </div>
     </footer>
 
