@@ -1,0 +1,15 @@
+1. Створено план з використанням Claude Sonnet 4.6 (arena.ai) - plan.md
+
+2. Створено каталог website_kf, додано каталог із додатковими матеріалами:
+
+- модельна программа
+
+- посилання на ресурси (підручник)
+
+- інструкції з виконання схожої роботи
+
+3. Створено репозитарій, опубліковано на github: https://github.com/ssemerikov/website_kf
+
+4. Налаштовано GitHub Pages: https://ssemerikov.github.io/website_kf/
+
+
