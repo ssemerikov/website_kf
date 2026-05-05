@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тренажери | Квадратична функція</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/main.css">
+    <style>
+        .practice-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 50px 0;
+        }
+        .trainer-card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .trainer-card h2 { margin-bottom: 15px; color: var(--secondary-color); }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .badge-green { background: #e8f5e9; color: #2e7d32; }
+        .badge-yellow { background: #fffde7; color: #f9a825; }
+        .badge-red { background: #ffebee; color: #c62828; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <a href="../index.html">📐 Квадратична<span>Функція</span></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../theory/index.html">📖 Теорія</a></li>
+                <li><a href="index.html" class="active">🏋️ Тренажери</a></li>
+                <li><a href="../tests/index.html">📝 Тести</a></li>
+                <li><a href="../index.html#progress">📊 Прогрес</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 style="margin-top: 40px; text-align: center;">Тренажерний зал</h1>
+        <p style="text-align: center; color: #666;">Обери тренажер для закріплення навичок</p>
+
+        <div class="practice-grid">
+            <div class="trainer-card">
+                <span class="badge badge-green">Легко</span>
+                <h2>Конструктор параболи</h2>
+                <p>Досліджуй, як коефіцієнти a, b, c впливають на вигляд графіка.</p>
+                <a href="constructor.html" class="btn btn-primary" style="display: block; margin-top: 20px;">Запустити</a>
+            </div>
+            <div class="trainer-card">
+                <span class="badge badge-yellow">Середній</span>
+                <h2>Детектив властивостей</h2>
+                <p>Аналізуй графік та визначай властивості функції як справжній детектив.</p>
+                <a href="detective.html" class="btn btn-primary" style="display: block; margin-top: 20px;">Запустити</a>
+            </div>
+            <div class="trainer-card">
+                <span class="badge badge-red">Складно</span>
+                <h2>Графічний диктант</h2>
+                <p>Побудуй параболу самостійно крок за кроком.</p>
+                <a href="dictation.html" class="btn btn-primary" style="display: block; margin-top: 20px;">Запустити</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Тренажери для вивчення квадратичної функції.</p>
+        </div>
+    </footer>
+
+    <script src="../scripts/main.js"></script>
+</body>
+</html>

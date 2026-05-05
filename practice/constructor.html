@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конструктор параболи | Тренажер</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/main.css">
+    <script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dCb31709b45247a7861503a1d66881d2"></script>
+    <style>
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+            margin-top: 40px;
+            height: 600px;
+        }
+        .controls {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        #calculator {
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .slider-group label { font-weight: 700; color: var(--primary-color); }
+        input[type="range"] { width: 100%; cursor: pointer; }
+        .property-display {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+        .property-item {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+        .property-item span { font-weight: 700; color: var(--secondary-color); }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <a href="../index.html">📐 Квадратична<span>Функція</span></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../theory/index.html">📖 Теорія</a></li>
+                <li><a href="index.html" class="active">🏋️ Тренажери</a></li>
+                <li><a href="../tests/index.html">📝 Тести</a></li>
+                <li><a href="../index.html#progress">📊 Прогрес</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 style="margin-top: 30px;">Тренажер 1: Конструктор параболи</h1>
+        <p>Керуй коефіцієнтами \( a, b, c \) та спостерігай за змінами графіка \( y = ax^2 + bx + c \).</p>
+
+        <div class="calculator-container">
+            <div class="controls">
+                <div class="slider-group">
+                    <label>a = <span id="val-a">1</span></label>
+                    <input type="range" id="slider-a" min="-5" max="5" step="0.1" value="1">
+                </div>
+                <div class="slider-group">
+                    <label>b = <span id="val-b">0</span></label>
+                    <input type="range" id="slider-b" min="-5" max="5" step="0.1" value="0">
+                </div>
+                <div class="slider-group">
+                    <label>c = <span id="val-c">0</span></label>
+                    <input type="range" id="slider-c" min="-5" max="5" step="0.1" value="0">
+                </div>
+
+                <div class="property-display">
+                    <h3>Властивості:</h3>
+                    <div class="property-item">Вершина: <span id="vertex">...</span></div>
+                    <div class="property-item">Напрям гілок: <span id="direction">...</span></div>
+                    <div class="property-item">Дискримінант: <span id="discriminant">...</span></div>
+                </div>
+                <a href="index.html" class="btn btn-secondary" style="margin-top: auto; text-align: center;">Назад до списку</a>
+            </div>
+            <div id="calculator"></div>
+        </div>
+    </main>
+
+    <script>
+        const elt = document.getElementById('calculator');
+        const calculator = Desmos.GraphingCalculator(elt, {
+            expressions: false,
+            settingsMenu: false,
+            zoomButtons: true,
+            lockViewport: false
+        });
+
+        const sliderA = document.getElementById('slider-a');
+        const sliderB = document.getElementById('slider-b');
+        const sliderC = document.getElementById('slider-c');
+
+        const valA = document.getElementById('val-a');
+        const valB = document.getElementById('val-b');
+        const valC = document.getElementById('val-c');
+
+        const vertexDisplay = document.getElementById('vertex');
+        const directionDisplay = document.getElementById('direction');
+        const discriminantDisplay = document.getElementById('discriminant');
+
+        function updateGraph() {
+            const a = parseFloat(sliderA.value);
+            const b = parseFloat(sliderB.value);
+            const c = parseFloat(sliderC.value);
+
+            valA.textContent = a;
+            valB.textContent = b;
+            valC.textContent = c;
+
+            calculator.setExpression({ id: 'graph1', latex: `y=${a}x^2 + ${b}x + ${c}`, color: Desmos.Colors.BLUE });
+
+            // Calculate properties
+            const x0 = -b / (2 * a);
+            const y0 = a * Math.pow(x0, 2) + b * x0 + c;
+            const D = b * b - 4 * a * c;
+
+            vertexDisplay.textContent = `(${x0.toFixed(2)}; ${y0.toFixed(2)})`;
+            directionDisplay.textContent = a > 0 ? 'Вгору ↑' : 'Вниз ↓';
+            discriminantDisplay.textContent = D.toFixed(2);
+        }
+
+        [sliderA, sliderB, sliderC].forEach(slider => {
+            slider.addEventListener('input', updateGraph);
+        });
+
+        // Initial call
+        updateGraph();
+    </script>
+</body>
+</html>

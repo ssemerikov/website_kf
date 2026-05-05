@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Графічний диктант | Тренажер</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/main.css">
+    <script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dCb31709b45247a7861503a1d66881d2"></script>
+    <style>
+        .dictation-container {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 30px;
+            margin-top: 30px;
+            height: 600px;
+        }
+        .task-panel {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+        }
+        #calculator { width: 100%; height: 100%; border-radius: 10px; }
+        .step {
+            padding: 15px;
+            border-left: 4px solid #ddd;
+            background: #f9f9f9;
+            transition: all 0.3s;
+        }
+        .step.active { border-left-color: var(--secondary-color); background: #e3f2fd; }
+        .step.success { border-left-color: #4caf50; background: #e8f5e9; }
+        .step.error { border-left-color: #f44336; background: #ffebee; }
+        
+        .input-group { margin-top: 10px; display: flex; gap: 5px; align-items: center; }
+        .input-group input { width: 60px; padding: 5px; border: 1px solid #ccc; border-radius: 4px; }
+        
+        #message { font-weight: 700; margin-top: 10px; min-height: 1.5em; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <a href="../index.html">📐 Квадратична<span>Функція</span></a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../theory/index.html">📖 Теорія</a></li>
+                <li><a href="index.html" class="active">🏋️ Тренажери</a></li>
+                <li><a href="../tests/index.html">📝 Тести</a></li>
+                <li><a href="../index.html#progress">📊 Прогрес</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h1 style="margin-top: 20px;">Графічний диктант: Побудова параболи</h1>
+        
+        <div class="dictation-container">
+            <div class="task-panel">
+                <div id="target-function" style="font-size: 1.2rem; font-weight: 700; color: var(--secondary-color); text-align: center; padding: 10px; background: #eee; border-radius: 5px;">
+                    y = x² - 4x + 3
+                </div>
+
+                <div id="step1" class="step active">
+                    <strong>Крок 1: Вершина</strong>
+                    <p>Знайди координати вершини (x₀; y₀):</p>
+                    <div class="input-group">
+                        x₀: <input type="number" id="x0-input" step="0.1">
+                        y₀: <input type="number" id="y0-input" step="0.1">
+                        <button class="btn btn-primary" style="padding: 5px 10px;" onclick="checkStep1()">ОК</button>
+                    </div>
+                </div>
+
+                <div id="step2" class="step">
+                    <strong>Крок 2: Точка на осі Oy</strong>
+                    <p>Знайди точку перетину з віссю ординат (0; c):</p>
+                    <div class="input-group">
+                        y: <input type="number" id="c-input">
+                        <button class="btn btn-primary" style="padding: 5px 10px;" onclick="checkStep2()">ОК</button>
+                    </div>
+                </div>
+
+                <div id="step3" class="step">
+                    <strong>Крок 3: Нулі функції</strong>
+                    <p>Знайди нулі функції (якщо вони є):</p>
+                    <div class="input-group">
+                        x₁: <input type="number" id="x1-input">
+                        x₂: <input type="number" id="x2-input">
+                        <button class="btn btn-primary" style="padding: 5px 10px;" onclick="checkStep3()">ОК</button>
+                    </div>
+                </div>
+
+                <div id="message"></div>
+                
+                <button id="reset-btn" class="btn btn-secondary" onclick="generateTask()">Нове завдання</button>
+                <a href="index.html" class="btn btn-secondary" style="text-align: center;">Назад</a>
+            </div>
+            <div id="calculator"></div>
+        </div>
+    </main>
+
+    <script>
+        const elt = document.getElementById('calculator');
+        const calculator = Desmos.GraphingCalculator(elt, {
+            expressions: false,
+            settingsMenu: false,
+            zoomButtons: true
+        });
+
+        let currentTask = { a: 1, b: -4, c: 3 };
+        let currentStep = 1;
+
+        function generateTask() {
+            // Simple random task: y = x^2 + bx + c (a is always 1 for simplicity in dictation)
+            const b = Math.floor(Math.random() * 10) - 5; // -5 to 4
+            const c = Math.floor(Math.random() * 10) - 5; // -5 to 4
+            currentTask = { a: 1, b: b, c: c };
+            
+            document.getElementById('target-function').textContent = `y = x² ${b >= 0 ? '+ ' + b : '- ' + Math.abs(b)}x ${c >= 0 ? '+ ' + c : '- ' + Math.abs(c)}`;
+            
+            // Reset UI
+            currentStep = 1;
+            document.getElementById('message').textContent = "";
+            document.getElementById('message').style.color = "inherit";
+            
+            resetSteps();
+            calculator.setBlank();
+            
+            // Clear inputs
+            document.querySelectorAll('input').forEach(i => i.value = "");
+        }
+
+        function resetSteps() {
+            for(let i=1; i<=3; i++) {
+                const s = document.getElementById('step' + i);
+                s.className = 'step';
+                if(i === 1) s.classList.add('active');
+            }
+        }
+
+        function checkStep1() {
+            if(currentStep !== 1) return;
+            const userX0 = parseFloat(document.getElementById('x0-input').value);
+            const userY0 = parseFloat(document.getElementById('y0-input').value);
+            
+            const trueX0 = -currentTask.b / (2 * currentTask.a);
+            const trueY0 = currentTask.a * trueX0 * trueX0 + currentTask.b * trueX0 + currentTask.c;
+
+            if(Math.abs(userX0 - trueX0) < 0.1 && Math.abs(userY0 - trueY0) < 0.1) {
+                successStep(1);
+                calculator.setExpression({ id: 'v', latex: `(${trueX0}, ${trueY0})`, color: Desmos.Colors.RED, label: 'Вершина' });
+                nextStep();
+            } else {
+                errorStep(1, "Неправильні координати вершини");
+            }
+        }
+
+        function checkStep2() {
+            if(currentStep !== 2) return;
+            const userC = parseFloat(document.getElementById('c-input').value);
+            if(userC === currentTask.c) {
+                successStep(2);
+                calculator.setExpression({ id: 'c_pt', latex: `(0, ${currentTask.c})`, color: Desmos.Colors.ORANGE, label: 'Перетин Oy' });
+                nextStep();
+            } else {
+                errorStep(2, "Неправильна точка перетину з Oy");
+            }
+        }
+
+        function checkStep3() {
+            if(currentStep !== 3) return;
+            const x1 = parseFloat(document.getElementById('x1-input').value);
+            const x2 = parseFloat(document.getElementById('x2-input').value);
+            
+            const D = currentTask.b * currentTask.b - 4 * currentTask.a * currentTask.c;
+            
+            if(D < 0) {
+                if(isNaN(x1) && isNaN(x2)) {
+                    finish();
+                } else {
+                    errorStep(3, "Тут немає нулів (D < 0)");
+                }
+            } else {
+                const trueX1 = (-currentTask.b + Math.sqrt(D)) / (2 * currentTask.a);
+                const trueX2 = (-currentTask.b - Math.sqrt(D)) / (2 * currentTask.a);
+                
+                const userRoots = [x1, x2].sort();
+                const trueRoots = [trueX1, trueX2].sort();
+
+                if(Math.abs(userRoots[0] - trueRoots[0]) < 0.1 && Math.abs(userRoots[1] - trueRoots[1]) < 0.1) {
+                    calculator.setExpression({ id: 'x1', latex: `(${trueX1}, 0)`, color: Desmos.Colors.GREEN });
+                    calculator.setExpression({ id: 'x2', latex: `(${trueX2}, 0)`, color: Desmos.Colors.GREEN });
+                    finish();
+                } else {
+                    errorStep(3, "Нулі функції обчислено неправильно");
+                }
+            }
+        }
+
+        function successStep(n) {
+            const s = document.getElementById('step' + n);
+            s.classList.remove('active');
+            s.classList.add('success');
+            document.getElementById('message').textContent = "Чудово!";
+            document.getElementById('message').style.color = "green";
+        }
+
+        function errorStep(n, msg) {
+            const s = document.getElementById('step' + n);
+            s.classList.add('error');
+            document.getElementById('message').textContent = msg;
+            document.getElementById('message').style.color = "red";
+        }
+
+        function nextStep() {
+            currentStep++;
+            const s = document.getElementById('step' + currentStep);
+            if(s) s.classList.add('active');
+        }
+
+        function finish() {
+            successStep(3);
+            calculator.setExpression({ id: 'final', latex: `y = ${currentTask.a}x^2 + ${currentTask.b}x + ${currentTask.c}`, color: Desmos.Colors.BLUE });
+            document.getElementById('message').textContent = "Вітаємо! Параболу побудовано!";
+            document.getElementById('message').style.color = "blue";
+        }
+
+        // Init
+        generateTask();
+    </script>
+</body>
+</html>
