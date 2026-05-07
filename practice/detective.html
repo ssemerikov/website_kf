@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Детектив властивостей: аналізуй графік параболи та визначай її властивості.">
     <title>Детектив властивостей | Тренажер</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles/main.css">
     <script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dCb31709b45247a7861503a1d66881d2"></script>
@@ -38,6 +41,21 @@
         .option-btn:hover { background: #e3f2fd; }
         .correct { background: #4caf50 !important; color: white; border-color: #4caf50; }
         .wrong { background: #f44336 !important; color: white; border-color: #f44336; }
+        @media (max-width: 768px) {
+            .detective-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            #calculator {
+                height: 400px;
+            }
+            .quest-panel {
+                padding: 15px;
+            }
+            .options {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
@@ -84,6 +102,25 @@
 
         let score = 0;
         let currentAns = "";
+        let transitioning = false;
+
+        function formatQuadraticDetective(a, b, c) {
+            let latex = 'y=';
+            if (a === 1) latex += 'x^2';
+            else if (a === -1) latex += '-x^2';
+            else latex += `${a}x^2`;
+            if (b !== 0) {
+                if (b > 0) latex += '+';
+                if (b === 1) latex += 'x';
+                else if (b === -1) latex += '-x';
+                else latex += `${b}x`;
+            }
+            if (c !== 0) {
+                if (c > 0) latex += '+';
+                latex += `${c}`;
+            }
+            return latex;
+        }
 
         const questions = [
             {
@@ -91,19 +128,29 @@
                 text: 'Куди спрямовані гілки цієї параболи?',
                 func: () => {
                     const a = Math.random() > 0.5 ? 1 : -1;
-                    return { latex: `y=${a}x^2`, ans: a > 0 ? 'Вгору' : 'Вниз', options: ['Вгору', 'Вниз'] };
+                    const scale = Math.floor(Math.random() * 3) + 1;
+                    const c = Math.floor(Math.random() * 5) - 2;
+                    return { latex: formatQuadraticDetective(a * scale, 0, c), ans: a > 0 ? 'Вгору' : 'Вниз', options: ['Вгору', 'Вниз'] };
                 }
             },
             {
                 type: 'roots',
                 text: 'Скільки нулів має ця функція?',
                 func: () => {
-                    const type = Math.floor(Math.random() * 3); // 0, 1, 2 roots
-                    let latex = "";
-                    let ans = "";
-                    if(type === 0) { latex = "y=x^2+4"; ans = "0"; }
-                    else if(type === 1) { latex = "y=x^2"; ans = "1"; }
-                    else { latex = "y=x^2-4"; ans = "2"; }
+                    const type = Math.floor(Math.random() * 3);
+                    let a, b, c;
+                    if (type === 0) {
+                        a = 1; b = 0; c = Math.floor(Math.random() * 4) + 1;
+                    } else if (type === 1) {
+                        const root = Math.floor(Math.random() * 7) - 3;
+                        a = 1; b = -2 * root; c = root * root;
+                    } else {
+                        const r1 = Math.floor(Math.random() * 7) - 3;
+                        const r2 = Math.floor(Math.random() * 7) - 3;
+                        a = 1; b = -(r1 + r2); c = r1 * r2;
+                    }
+                    const latex = formatQuadraticDetective(a, b, c);
+                    const ans = type === 0 ? '0' : type === 1 ? '1' : '2';
                     return { latex, ans, options: ['0', '1', '2', 'Безліч'] };
                 }
             },
@@ -111,21 +158,34 @@
                 type: 'vertex',
                 text: 'Яка абсциса (x₀) вершини?',
                 func: () => {
-                    const x0 = Math.floor(Math.random() * 6) - 3;
-                    return { latex: `y=(x-${x0})^2`, ans: x0.toString(), options: [(x0-1).toString(), x0.toString(), (x0+1).toString(), '0'] };
+                    const x0 = Math.floor(Math.random() * 7) - 3;
+                    let latex;
+                    if (x0 === 0) latex = 'y=x^2';
+                    else if (x0 > 0) latex = `y=(x-${x0})^2`;
+                    else latex = `y=(x+${Math.abs(x0)})^2`;
+                    const optSet = new Set([x0.toString()]);
+                    let offset = 1;
+                    while (optSet.size < 4) {
+                        optSet.add((x0 + offset).toString());
+                        optSet.add((x0 - offset).toString());
+                        offset++;
+                    }
+                    const options = [...optSet].slice(0, 4);
+                    return { latex, ans: x0.toString(), options };
                 }
             }
         ];
 
         function nextQuestion() {
+            transitioning = false;
             const q = questions[Math.floor(Math.random() * questions.length)];
             const data = q.func();
-            
+
             document.getElementById('question-text').textContent = q.text;
             calculator.setExpression({ id: 'g', latex: data.latex, color: Desmos.Colors.BLUE });
-            
+
             const optionsBox = document.getElementById('options-box');
-            optionsBox.innerHTML = "";
+            while (optionsBox.firstChild) optionsBox.removeChild(optionsBox.firstChild);
             currentAns = data.ans;
 
             data.options.forEach(opt => {
@@ -138,17 +198,29 @@
         }
 
         function checkAns(btn, val) {
-            if(val == currentAns) {
+            if (transitioning) return;
+            if (val == currentAns) {
                 btn.classList.add('correct');
                 score++;
+                transitioning = true;
                 document.getElementById('score').textContent = `Рахунок: ${score}`;
-                setTimeout(nextQuestion, 1000);
+                document.querySelectorAll('.option-btn').forEach(b => b.style.pointerEvents = 'none');
+                setTimeout(() => {
+                    transitioning = false;
+                    nextQuestion();
+                }, 1000);
             } else {
                 btn.classList.add('wrong');
+                btn.style.pointerEvents = 'none';
             }
         }
 
         nextQuestion();
     </script>
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Інтерактивний освітній ресурс. Квадратична функція.</p>
+        </div>
+    </footer>
 </body>
 </html>

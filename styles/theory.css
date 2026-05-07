@@ -115,9 +115,21 @@
     .theory-layout {
         grid-template-columns: 1fr;
     }
-    
+
     .sidebar {
         position: static;
         margin-bottom: 30px;
+    }
+
+    .content section {
+        padding: 20px;
+    }
+
+    .content h1 {
+        font-size: 1.6rem;
+    }
+
+    .content h2 {
+        font-size: 1.4rem;
     }
 }

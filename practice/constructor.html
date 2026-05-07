@@ -3,9 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Конструктор параболи: змінюй коефіцієнти a, b, c та спостерігай за графіком у реальному часі.">
     <title>Конструктор параболи | Тренажер</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles/main.css">
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}, {left: '\\(', right: '\\)', display: false}, {left: '\\[', right: '\\]', display: true}]});"></script>
     <script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dCb31709b45247a7861503a1d66881d2"></script>
     <style>
         .calculator-container {
@@ -47,6 +54,18 @@
             font-size: 0.9rem;
         }
         .property-item span { font-weight: 700; color: var(--secondary-color); }
+        @media (max-width: 768px) {
+            .calculator-container {
+                grid-template-columns: 1fr;
+                height: auto;
+            }
+            #calculator {
+                height: 400px;
+            }
+            .controls {
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -116,25 +135,47 @@
         const directionDisplay = document.getElementById('direction');
         const discriminantDisplay = document.getElementById('discriminant');
 
+        function formatQuadratic(a, b, c) {
+            let latex = 'y=';
+            if (a === 1) latex += 'x^2';
+            else if (a === -1) latex += '-x^2';
+            else latex += `${a}x^2`;
+            if (b !== 0) {
+                if (b > 0) latex += '+';
+                if (b === 1) latex += 'x';
+                else if (b === -1) latex += '-x';
+                else latex += `${b}x`;
+            }
+            if (c !== 0) {
+                if (c > 0) latex += '+';
+                latex += `${c}`;
+            }
+            return latex;
+        }
+
         function updateGraph() {
             const a = parseFloat(sliderA.value);
             const b = parseFloat(sliderB.value);
             const c = parseFloat(sliderC.value);
 
-            valA.textContent = a;
-            valB.textContent = b;
-            valC.textContent = c;
+            valA.textContent = parseFloat(a.toFixed(1));
+            valB.textContent = parseFloat(b.toFixed(1));
+            valC.textContent = parseFloat(c.toFixed(1));
 
-            calculator.setExpression({ id: 'graph1', latex: `y=${a}x^2 + ${b}x + ${c}`, color: Desmos.Colors.BLUE });
-
-            // Calculate properties
-            const x0 = -b / (2 * a);
-            const y0 = a * Math.pow(x0, 2) + b * x0 + c;
-            const D = b * b - 4 * a * c;
-
-            vertexDisplay.textContent = `(${x0.toFixed(2)}; ${y0.toFixed(2)})`;
-            directionDisplay.textContent = a > 0 ? 'Вгору ↑' : 'Вниз ↓';
-            discriminantDisplay.textContent = D.toFixed(2);
+            if (a === 0) {
+                calculator.setExpression({ id: 'graph1', latex: `y=${b}x+${c}`, color: Desmos.Colors.BLUE });
+                vertexDisplay.textContent = 'Не є квадратичною';
+                directionDisplay.textContent = '—';
+                discriminantDisplay.textContent = '—';
+            } else {
+                calculator.setExpression({ id: 'graph1', latex: formatQuadratic(a, b, c), color: Desmos.Colors.BLUE });
+                const x0 = -b / (2 * a);
+                const y0 = a * x0 * x0 + b * x0 + c;
+                const D = b * b - 4 * a * c;
+                vertexDisplay.textContent = `(${x0.toFixed(2)}; ${y0.toFixed(2)})`;
+                directionDisplay.textContent = a > 0 ? 'Вгору ↑' : 'Вниз ↓';
+                discriminantDisplay.textContent = D.toFixed(2);
+            }
         }
 
         [sliderA, sliderB, sliderC].forEach(slider => {
@@ -144,5 +185,10 @@
         // Initial call
         updateGraph();
     </script>
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Інтерактивний освітній ресурс. Квадратична функція.</p>
+        </div>
+    </footer>
 </body>
 </html>

@@ -3,11 +3,13 @@ const navSlide = () => {
     const nav = document.querySelector('.nav-links');
     const navLinks = document.querySelectorAll('.nav-links li');
 
-    burger.addEventListener('click', () => {
-        // Toggle Nav
-        nav.classList.toggle('nav-active');
+    if (!burger || !nav) return;
 
-        // Animate Links
+    burger.addEventListener('click', () => {
+        nav.classList.toggle('nav-active');
+        const isOpen = nav.classList.contains('nav-active');
+        burger.setAttribute('aria-expanded', isOpen);
+
         navLinks.forEach((link, index) => {
             if (link.style.animation) {
                 link.style.animation = '';
@@ -16,7 +18,6 @@ const navSlide = () => {
             }
         });
 
-        // Burger Animation
         burger.classList.toggle('toggle');
     });
 }

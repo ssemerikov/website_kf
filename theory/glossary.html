@@ -3,8 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Глосарій термінів: квадратична функція, парабола, вершина, нулі, дискримінант.">
     <title>Глосарій | Квадратична функція</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.10/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}, {left: '\\(', right: '\\)', display: false}, {left: '\\[', right: '\\]', display: true}]});"></script>
     <link rel="stylesheet" href="../styles/main.css">
     <style>
         .glossary-list { margin-top: 30px; }
@@ -25,9 +31,10 @@
                 <a href="../index.html">📐 Квадратична<span>Функція</span></a>
             </div>
             <ul class="nav-links">
-                <li><a href="index.html">📖 Теорія</a></li>
+                <li><a href="index.html" class="active">📖 Теорія</a></li>
                 <li><a href="../practice/index.html">🏋️ Тренажери</a></li>
                 <li><a href="../tests/index.html">📝 Тести</a></li>
+                <li><a href="../index.html#progress">📊 Прогрес</a></li>
             </ul>
         </nav>
     </header>
@@ -37,7 +44,7 @@
         <div class="glossary-list">
             <div class="term-item">
                 <h3>Квадратична функція</h3>
-                <p>Функція вигляду y = ax² + bx + c, де a ≠ 0.</p>
+                <p>Функція вигляду $y = ax^2 + bx + c$, де $a \neq 0$.</p>
             </div>
             <div class="term-item">
                 <h3>Парабола</h3>
@@ -53,10 +60,16 @@
             </div>
             <div class="term-item">
                 <h3>Дискримінант</h3>
-                <p>Вираз D = b² - 4ac, що визначає кількість коренів квадратного рівняння та нулів квадратичної функції.</p>
+                <p>Вираз $D = b^2 - 4ac$, що визначає кількість коренів квадратного рівняння та нулів квадратичної функції.</p>
             </div>
         </div>
         <a href="index.html" class="btn btn-secondary">Назад до теорії</a>
     </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Інтерактивний освітній ресурс. Квадратична функція.</p>
+        </div>
+    </footer>
 </body>
 </html>
